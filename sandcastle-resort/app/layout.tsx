@@ -10,6 +10,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Preload the cinematic video */}
+        <link rel="preload" href="/videos/resort-cinematic.mp4" as="video" type="video/mp4" />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
