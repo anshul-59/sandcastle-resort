@@ -5,38 +5,41 @@
   --font-display: 'Cormorant Garamond', serif;
   --font-body: 'Jost', sans-serif;
 
-  --color-sand-50:   #fdfaf5;
-  --color-sand-100:  #f7f0e4;
-  --color-sand-200:  #eedfc8;
-  --color-sand-300:  #dfc8a8;
-  --color-sand-400:  #c9a87a;
-  --color-sand-500:  #b38b55;
+  /* Sand tones — unchanged, they're perfect */
+  --color-sand-50:  #fdfaf5;
+  --color-sand-100: #f7f0e4;
+  --color-sand-200: #eedfc8;
+  --color-sand-300: #dfc8a8;
+  --color-sand-400: #c9a87a;
+  --color-sand-500: #b38b55;
 
-  --color-ocean-50:   #f0f7f8;
-  --color-ocean-100:  #d6eef2;
-  --color-ocean-200:  #a8d8e0;
-  --color-ocean-300:  #6ab5c4;
-  --color-ocean-400:  #3d8fa3;
-  --color-ocean-500:  #1e6b82;
-  --color-ocean-600:  #0d4e65;
-  --color-ocean-deep: #082a3a;
+  /* Red/terracotta — the new primary */
+  --color-red-50:   #fdf2f0;
+  --color-red-100:  #fad9d4;
+  --color-red-200:  #f2a99f;
+  --color-red-300:  #e8755e;
+  --color-red-400:  #d94f35;
+  --color-red-500:  #c0392b;
+  --color-red-600:  #9e2b1f;
+  --color-red-deep: #6b1a11;
 
-  --color-dusk:           #1a1510;
-  --color-text-primary:   #1a1510;
-  --color-text-secondary: #5c4f3d;
-  --color-text-muted:     #9a8b79;
+  /* Deep dark — charcoal black with warm red undertone */
+  --color-dusk:     #1a0d0a;
+  --color-charcoal: #2d1a15;
+
+  /* Minimal blue — only for map/water accents */
+  --color-blue-accent: #2a5f7a;
+
+  --color-text-primary:   #1a0d0a;
+  --color-text-secondary: #5c3d35;
+  --color-text-muted:     #9a7068;
   --color-text-light:     #fdfaf5;
 }
 
-/* Custom font utilities so font-display / font-body work as Tailwind classes */
-@utility font-display {
-  font-family: var(--font-display);
-}
-@utility font-body {
-  font-family: var(--font-body);
-}
+@utility font-display { font-family: var(--font-display); }
+@utility font-body    { font-family: var(--font-body); }
 
-/* ── CSS custom props kept for inline style={{ "var(--…)" }} usage ── */
+/* ── CSS custom props for inline style={{ "var(--…)" }} usage ── */
 :root {
   --sand-50:  #fdfaf5;
   --sand-100: #f7f0e4;
@@ -45,28 +48,35 @@
   --sand-400: #c9a87a;
   --sand-500: #b38b55;
 
-  --ocean-50:   #f0f7f8;
-  --ocean-100:  #d6eef2;
-  --ocean-200:  #a8d8e0;
-  --ocean-300:  #6ab5c4;
-  --ocean-400:  #3d8fa3;
-  --ocean-500:  #1e6b82;
-  --ocean-600:  #0d4e65;
-  --ocean-deep: #082a3a;
+  /* Primary reds */
+  --red-50:   #fdf2f0;
+  --red-100:  #fad9d4;
+  --red-200:  #f2a99f;
+  --red-300:  #e8755e;
+  --red-400:  #d94f35;
+  --red-500:  #c0392b;
+  --red-600:  #9e2b1f;
+  --red-deep: #6b1a11;
 
-  --dusk:           #1a1510;
-  --text-primary:   #1a1510;
-  --text-secondary: #5c4f3d;
-  --text-muted:     #9a8b79;
+  /* Legacy aliases so old var(--ocean-*) still resolve gracefully */
+  --ocean-50:   #fdf2f0;
+  --ocean-100:  #fad9d4;
+  --ocean-200:  #f2a99f;
+  --ocean-300:  #e8755e;
+  --ocean-400:  #d94f35;
+  --ocean-500:  #c0392b;
+  --ocean-600:  #9e2b1f;
+  --ocean-deep: #1a0d0a;
+
+  --dusk:           #1a0d0a;
+  --charcoal:       #2d1a15;
+  --text-primary:   #1a0d0a;
+  --text-secondary: #5c3d35;
+  --text-muted:     #9a7068;
   --text-light:     #fdfaf5;
 }
 
-/* ── Base ── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
@@ -74,14 +84,11 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   background: var(--sand-50);
   color: var(--text-primary);
-  font-family: var(--font-display, 'Cormorant Garamond', serif);
-  font-family: var(--font-body, 'Jost', sans-serif);
+  font-family: 'Jost', sans-serif;
   font-weight: 300;
   line-height: 1.6;
   overflow-x: hidden;
@@ -89,41 +96,27 @@ body {
   min-height: 100vh;
 }
 
+@media (max-width: 768px) { body { cursor: auto; } }
 
+::selection { background: var(--red-300); color: var(--dusk); }
 
-/* ── Selection ── */
-::selection {
-  background: var(--ocean-300);
-  color: var(--dusk);
-}
-
-/* ── Scrollbar ── */
 ::-webkit-scrollbar          { width: 3px; }
 ::-webkit-scrollbar-track    { background: var(--sand-100); }
-::-webkit-scrollbar-thumb    { background: var(--ocean-400); border-radius: 2px; }
+::-webkit-scrollbar-thumb    { background: var(--red-400); border-radius: 2px; }
 
-/* ── Lenis ── */
-html.lenis,
-html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis, html.lenis body  { height: auto; }
+.lenis.lenis-smooth          { scroll-behavior: auto !important; }
 
-/* ── Typography helpers (safety net if @utility doesn't load in time) ── */
 .font-display { font-family: 'Cormorant Garamond', serif; }
 .font-body    { font-family: 'Jost', sans-serif; }
+.bg-white     { background-color: #ffffff !important; }
 
-/* ── Ensure bg-white works (v4 sometimes needs explicit white) ── */
-.bg-white { background-color: #ffffff !important; }
-
+/* ── Custom cursor ── */
 .custom-cursor-container {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   pointer-events: none;
   z-index: 9999;
-  /* REMOVE transition: all or transition: transform. 
-     If there is a transition here, the cursor WILL slide.
-  */
-  transition: opacity 0.3s ease, scale 0.2s ease; 
+  transition: opacity 0.3s ease, scale 0.2s ease;
   will-change: transform;
 }
-
