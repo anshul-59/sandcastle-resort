@@ -74,6 +74,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+
 body {
   margin: 0;
   padding: 0;
@@ -88,9 +89,7 @@ body {
   min-height: 100vh;
 }
 
-@media (max-width: 768px) {
-  body { cursor: auto; }
-}
+
 
 /* ── Selection ── */
 ::selection {
@@ -103,36 +102,6 @@ body {
 ::-webkit-scrollbar-track    { background: var(--sand-100); }
 ::-webkit-scrollbar-thumb    { background: var(--ocean-400); border-radius: 2px; }
 
-/* ── Custom cursor ── */
-.cursor {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: var(--ocean-400);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, background 0.3s;
-  mix-blend-mode: multiply;
-}
-
-.cursor-follower {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--ocean-400);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: all 0.2s ease;
-  opacity: 0.5;
-}
-
-.cursor.hovering          { width: 50px; height: 50px; background: rgba(61,143,163,0.2); }
-.cursor-follower.hovering { opacity: 0; }
-
 /* ── Lenis ── */
 html.lenis,
 html.lenis body { height: auto; }
@@ -144,3 +113,17 @@ html.lenis body { height: auto; }
 
 /* ── Ensure bg-white works (v4 sometimes needs explicit white) ── */
 .bg-white { background-color: #ffffff !important; }
+
+.custom-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  /* REMOVE transition: all or transition: transform. 
+     If there is a transition here, the cursor WILL slide.
+  */
+  transition: opacity 0.3s ease, scale 0.2s ease; 
+  will-change: transform;
+}
+

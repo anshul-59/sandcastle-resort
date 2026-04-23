@@ -10,6 +10,7 @@ import Experiences from "./components/Experiences";
 import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import MusicShell from "./components/MusicShell";
 
 export default function Home() {
   useSmoothScroll();
@@ -27,6 +28,7 @@ export default function Home() {
         <Testimonials />
         <Contact />
       </main>
+      <MusicShell />
       <Footer />
     </>
   );

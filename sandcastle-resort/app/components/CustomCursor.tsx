@@ -1,59 +1,79 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const followerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (window.innerWidth < 768) return;
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+    
     const cursor = cursorRef.current;
-    const follower = followerRef.current;
-    if (!cursor || !follower) return;
+    if (!cursor) return;
 
-    let mouseX = 0, mouseY = 0;
-    let followerX = 0, followerY = 0;
+    // Track current scale to offset translate calculations
+    let currentScale = 1;
 
     const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.left = mouseX + "px";
-      cursor.style.top = mouseY + "px";
+      const x = e.clientX;
+      const y = e.clientY;
+      // Offset translate by half the scaled size to keep cursor centered on pointer
+      const offset = (currentScale - 1) * 16; // 32px * 0.5 = 16px offset per 0.1 scale
+      
+      cursor.style.transform = `translate3d(${x - offset}px, ${y - offset}px, 0) scale(${currentScale})`;
     };
 
-    const animate = () => {
-      followerX += (mouseX - followerX) * 0.12;
-      followerY += (mouseY - followerY) * 0.12;
-      follower.style.left = followerX + "px";
-      follower.style.top = followerY + "px";
-      requestAnimationFrame(animate);
+    const onEnter = () => {
+      currentScale = 1.2;
+      // Recalculate offset immediately when scale changes
+      const offset = (currentScale - 1) * 16;
+      const rect = cursor.getBoundingClientRect();
+      cursor.style.transform = `translate3d(${rect.left - offset}px, ${rect.top - offset}px, 0) scale(${currentScale})`;
     };
-    animate();
-
-    const addHover = () => {
-      cursor.classList.add("hovering");
-      follower.classList.add("hovering");
-    };
-    const removeHover = () => {
-      cursor.classList.remove("hovering");
-      follower.classList.remove("hovering");
+    
+    const onLeave = () => {
+      currentScale = 1;
+      const offset = (currentScale - 1) * 16;
+      const rect = cursor.getBoundingClientRect();
+      cursor.style.transform = `translate3d(${rect.left - offset}px, ${rect.top -0}px, 0) scale(${currentScale})`;
     };
 
-    document.addEventListener("mousemove", onMove);
-    document.querySelectorAll("a, button, [data-cursor]").forEach(el => {
-      el.addEventListener("mouseenter", addHover);
-      el.addEventListener("mouseleave", removeHover);
+    window.addEventListener("mousemove", onMove);
+    
+    const interactive = document.querySelectorAll("a, button, .cursor-pointer");
+    interactive.forEach(el => {
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
     });
 
     return () => {
-      document.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mousemove", onMove);
+      interactive.forEach(el => {
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
     };
   }, []);
 
   return (
-    <>
-      <div ref={cursorRef} className="cursor hidden md:block" />
-      <div ref={followerRef} className="cursor-follower hidden md:block" />
-    </>
+    <div 
+      ref={cursorRef} 
+      className="custom-cursor-container hidden md:block"
+      style={{ 
+        width: '32px', 
+        height: '32px',
+        marginTop: '-16px', 
+        marginLeft: '-16px',
+        position: 'fixed',
+        top: 0,
+        left: 0
+      }}
+    >
+      <img 
+        src="/cursor-shell.png" 
+        alt="" 
+        className="w-full h-full object-contain" 
+      />
+    </div>
   );
 }
