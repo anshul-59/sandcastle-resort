@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
+
+@theme {
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Jost', sans-serif;
+
+  --color-sand-50:   #fdfaf5;
+  --color-sand-100:  #f7f0e4;
+  --color-sand-200:  #eedfc8;
+  --color-sand-300:  #dfc8a8;
+  --color-sand-400:  #c9a87a;
+  --color-sand-500:  #b38b55;
+
+  --color-ocean-50:   #f0f7f8;
+  --color-ocean-100:  #d6eef2;
+  --color-ocean-200:  #a8d8e0;
+  --color-ocean-300:  #6ab5c4;
+  --color-ocean-400:  #3d8fa3;
+  --color-ocean-500:  #1e6b82;
+  --color-ocean-600:  #0d4e65;
+  --color-ocean-deep: #082a3a;
+
+  --color-dusk:           #1a1510;
+  --color-text-primary:   #1a1510;
+  --color-text-secondary: #5c4f3d;
+  --color-text-muted:     #9a8b79;
+  --color-text-light:     #fdfaf5;
+}
+
+/* Custom font utilities so font-display / font-body work as Tailwind classes */
+@utility font-display {
+  font-family: var(--font-display);
+}
+@utility font-body {
+  font-family: var(--font-body);
+}
+
+/* ── CSS custom props kept for inline style={{ "var(--…)" }} usage ── */
+:root {
+  --sand-50:  #fdfaf5;
+  --sand-100: #f7f0e4;
+  --sand-200: #eedfc8;
+  --sand-300: #dfc8a8;
+  --sand-400: #c9a87a;
+  --sand-500: #b38b55;
+
+  --ocean-50:   #f0f7f8;
+  --ocean-100:  #d6eef2;
+  --ocean-200:  #a8d8e0;
+  --ocean-300:  #6ab5c4;
+  --ocean-400:  #3d8fa3;
+  --ocean-500:  #1e6b82;
+  --ocean-600:  #0d4e65;
+  --ocean-deep: #082a3a;
+
+  --dusk:           #1a1510;
+  --text-primary:   #1a1510;
+  --text-secondary: #5c4f3d;
+  --text-muted:     #9a8b79;
+  --text-light:     #fdfaf5;
+}
+
+/* ── Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--sand-50);
+  color: var(--text-primary);
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-family: var(--font-body, 'Jost', sans-serif);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  body { cursor: auto; }
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--ocean-300);
+  color: var(--dusk);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar          { width: 3px; }
+::-webkit-scrollbar-track    { background: var(--sand-100); }
+::-webkit-scrollbar-thumb    { background: var(--ocean-400); border-radius: 2px; }
+
+/* ── Custom cursor ── */
+.cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--ocean-400);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: multiply;
+}
+
+.cursor-follower {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--ocean-400);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease;
+  opacity: 0.5;
+}
+
+.cursor.hovering          { width: 50px; height: 50px; background: rgba(61,143,163,0.2); }
+.cursor-follower.hovering { opacity: 0; }
+
+/* ── Lenis ── */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* ── Typography helpers (safety net if @utility doesn't load in time) ── */
+.font-display { font-family: 'Cormorant Garamond', serif; }
+.font-body    { font-family: 'Jost', sans-serif; }
+
+/* ── Ensure bg-white works (v4 sometimes needs explicit white) ── */
+.bg-white { background-color: #ffffff !important; }
